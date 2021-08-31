@@ -1,0 +1,115 @@
+#!/usr/local/bin/lua
+--Check the path to the Lua interpreter on your linux. It may be different than the one above 
+
+--[[
+program: windrand
+release: 1.0
+last revison: 31.08.2021
+
+author: Krzysztof Nachszon Lipa-Izdebski
+
+Github:
+
+
+The program draws 6 random numbers (as in Lotto). The number of bets is given by the user.
+The program can be used to generate random numbers in games. 
+The author does not guarantee the win :) 
+]]--
+
+--[[configuration section]]--
+--number of randomly selected numbers
+number_rand=6
+
+--number of bets
+--request for the number of bets
+print("Enter the number of bets")
+
+number_bets=io.read()
+
+--[[end of configuration section]]--
+
+--start random engine
+--without this instruction, only one random number would be generated at all times 
+math.randomseed(os.time())
+
+
+--[[The function func_build_rand(number_rand) builds an array of random numbers
+There may be duplicates in the array
+Duplicates will be cleared in func_erase_duplicate () ]]--
+function func_build_rand(number_rand)
+    
+    
+    --The number of columns in the one-dimensional array of random numbers is the number of random numbers 
+    max_column=number_rand
+    max_index=max_column
+    
+    -- one-dimensional array initialization  
+    tab_rand={}
+    
+    --put random numbers in the tab_rand array 
+    for column=1,max_column do
+        tab_rand[column]=math.random(1,49)
+    
+        end
+        
+--this "end" closes function build_rand(max_column_dev)       
+end
+
+--The function func_erase_duplicate() removes duplicates from the tab_rand array 
+function func_erase_duplicate()
+    
+   --[[initial value count_duplicate must be different from 0
+Then it is possible to enter a while loop]]--
+    count_duplicate=1
+    
+    --while_1
+    while (count_duplicate~=0) do
+        count_duplicate=0
+        
+        --The function func_build_rand(number_rand) will build an array of random numbers until there are no duplicates in the array
+        func_build_rand(number_rand)
+        
+        --Splitting tab_rand into two instances. Each element of the array is compared to each element different from itself. 
+        --for_1
+        for _index=1,#tab_rand-1 do
+            --for_2
+            for _index_in=_index+1,#tab_rand do
+                --if_1
+                if tab_rand[_index]==tab_rand[_index_in] then
+                    count_duplicate=count_duplicate+1
+                    --this "end" closes if_1
+                    end
+            --this "end" closes loop for_2    
+            end
+        --this "end" closes loop for_1    
+        end
+    
+        --this "end" closes loop while_1    
+    end
+    
+    --[[There are no duplicates in the tab_rand table anymore
+    The array can now be sorted ]]--
+   
+    table.sort(tab_rand)
+
+    --this "end" closes function func_erase_duplicate()
+end
+
+--[[In the function func_read_data() We read the data from the array of random numbers. The data array is cleared of duplicates and sorted]]--
+function func_read_data()
+    for _index=1,max_index do
+        io.write(tab_rand[_index].." ")
+        end
+    print ("\n")
+    
+--this "end" closes function func_read_data()    
+end
+
+--final
+print ("\nYour lucky numbers:")
+for bet=1,number_bets do
+func_erase_duplicate()            
+func_read_data()
+    end
+
+--end of program windrand
